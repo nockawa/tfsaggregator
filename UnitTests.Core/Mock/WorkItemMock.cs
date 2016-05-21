@@ -201,5 +201,10 @@ namespace UnitTests.Core.Mock
         {
             return string.Format("WI #{0} [{1}]{2}", this.Id, this.TypeName, this.IsDirty ? "*" : string.Empty);
         }
+
+        public IEnumerable<int> GetAssociatedChangesetIds()
+        {
+            yield return 42;
+        }
     }
 }

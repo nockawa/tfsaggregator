@@ -62,5 +62,7 @@ namespace Aggregator.Core.Interfaces
 
         // state helpers; must be on interface to work on WorkItemLazyReference
         void TransitionToState(string state, string comment);
+
+        IEnumerable<int> GetAssociatedChangesetIds();
     }
 }

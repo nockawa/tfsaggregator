@@ -9,6 +9,7 @@ using Aggregator.Core.Monitoring;
 using Aggregator.Core.Navigation;
 
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace Aggregator.Core.Facade
 {
@@ -259,6 +260,21 @@ namespace Aggregator.Core.Facade
             else
             {
                 this.Logger.HyperlinkAlreadyExists(this.Id, destination, comment);
+            }
+        }
+
+        public IEnumerable<int> GetAssociatedChangesetIds()
+        {
+            var tpc = this.workItem.Store.TeamProjectCollection;
+            var versionControlServer = tpc.GetService<VersionControlServer>();
+            var artifactProvider = versionControlServer.ArtifactProvider;
+
+            foreach (var changeset in this.workItem.Links
+                    .OfType<ExternalLink>()
+                    .Select(link => artifactProvider
+                        .GetChangeset(new Uri(link.LinkedArtifactUri))))
+            {
+                yield return changeset.ChangesetId;
             }
         }
     }
