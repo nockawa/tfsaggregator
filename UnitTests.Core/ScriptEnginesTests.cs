@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
-
 using Aggregator.Core;
 using Aggregator.Core.Context;
 using Aggregator.Core.Interfaces;
@@ -12,11 +11,8 @@ using Aggregator.Core.Script;
 
 using Microsoft.TeamFoundation.Framework.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
-
 using UnitTests.Core.Mock;
-
 using Debugger = System.Diagnostics.Debugger;
 
 namespace UnitTests.Core
