@@ -75,12 +75,17 @@ namespace Aggregator.Core.Facade
         public IProjectProperty[] GetProjectProperties(Uri projectUri)
         {
             var ics = this.context.GetService<ICommonStructureService>();
+
+#if TFS2017u2
+            var info = ics.GetProject(this.context, projectUri.ToString()).ToProjectInfo();
+            var projectProperties = info.Properties;
+#else
             string projectName;
             string projectState;
 
             CommonStructureProjectProperty[] projectProperties;
-
             ics.GetProjectProperties(this.context, projectUri.ToString(), out projectName, out projectState, out projectProperties);
+#endif
 
             return projectProperties.Select(p => (IProjectProperty)new ProjectPropertyWrapper() { Name = p.Name, Value = p.Value }).ToArray();
         }
