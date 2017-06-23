@@ -7,6 +7,7 @@ using Aggregator.Core.Context;
 using Aggregator.Core.Facade;
 using Aggregator.Core.Interfaces;
 using Aggregator.Core.Monitoring;
+using Aggregator.Core.Script;
 
 using IdentityDescriptor = Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor;
 
@@ -106,7 +107,22 @@ namespace Aggregator.Core
             }))
             {
                 this.logger.RunningRule(rule.Name, workItem);
-                this.engine.Run(rule.Name, workItem, this.store);
+
+                // Compiled rule execution
+                if (rule.CompiledRuleType != null)
+                {
+                    if (rule.CompiledRule == null)
+                    {
+                        rule.CompiledRule = (ICompiledRule)Activator.CreateInstance(rule.CompiledRuleType);
+                    }
+                    this.engine.RunCompiledRule(rule, workItem, this.store);
+                }
+
+                // Scripted rule execution
+                else
+                {
+                    this.engine.Run(rule.Name, workItem, this.store);
+                }
             }
         }
 

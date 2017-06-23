@@ -26,10 +26,10 @@ namespace Aggregator.Core.Configuration
         /// <returns>An instance of <see cref="TFSAggregatorSettings"/> or null</returns>
         public static TFSAggregatorSettings LoadFromFile(string settingsPath, ILogEvents logger)
         {
-            DateTime lastWriteTime
-                = System.IO.File.GetLastWriteTimeUtc(settingsPath);
+            DateTime lastWriteTime = System.IO.File.GetLastWriteTimeUtc(settingsPath);
             var parser = new AggregatorSettingsXmlParser(logger);
-            return parser.Parse(lastWriteTime, (xmlLoadOptions) => XDocument.Load(settingsPath, xmlLoadOptions));
+            var settingDirectory = System.IO.Path.GetDirectoryName(settingsPath);
+            return parser.Parse(lastWriteTime, (xmlLoadOptions) => XDocument.Load(settingsPath, xmlLoadOptions), settingDirectory);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Aggregator.Core.Configuration
             // conventional point in time reference
             DateTime staticTimestamp = new DateTime(0, DateTimeKind.Utc);
             var parser = new AggregatorSettingsXmlParser(logger);
-            return parser.Parse(staticTimestamp, (xmlLoadOptions) => XDocument.Parse(content, xmlLoadOptions));
+            return parser.Parse(staticTimestamp, (xmlLoadOptions) => XDocument.Parse(content, xmlLoadOptions), System.IO.Directory.GetCurrentDirectory());
         }
 
         public LogLevel LogLevel { get; private set; }
@@ -67,5 +67,7 @@ namespace Aggregator.Core.Configuration
         public bool Debug { get; set; }
 
         public RateLimit RateLimit { get; set; }
+
+        public List<string> RulesAssemblies { get; private set; }
     }
 }

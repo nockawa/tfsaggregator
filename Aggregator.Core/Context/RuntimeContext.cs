@@ -57,7 +57,10 @@ namespace Aggregator.Core.Context
                 {
                     var itemPolicy = new CacheItemPolicy();
                     itemPolicy.Priority = CacheItemPriority.NotRemovable;
-                    itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(new List<string>() { settingsPath }));
+                    var watchedFiles = new List<string>();
+                    watchedFiles.AddRange(settings.RulesAssemblies);
+                    watchedFiles.Add(settingsPath);
+                    itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(watchedFiles));
 
                     Cache.Set(cacheKey, runtime, itemPolicy);
                 }
@@ -150,7 +153,10 @@ namespace Aggregator.Core.Context
 
                 var itemPolicy = new CacheItemPolicy();
                 itemPolicy.Priority = CacheItemPriority.NotRemovable;
-                itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(new List<string>() { this.SettingsPath }));
+                var watchedFiles = new List<string>();
+                watchedFiles.AddRange(Settings.RulesAssemblies);
+                watchedFiles.Add(this.SettingsPath);
+                itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(watchedFiles));
 
                 Cache.Set(cacheKey, engine, itemPolicy);
             }
@@ -178,8 +184,9 @@ namespace Aggregator.Core.Context
                     return new Script.ScriptSourceElement()
                     {
                         Name = rule.Name,
-                        Type = Script.ScriptSourceElementType.Rule,
-                        SourceCode = rule.Script
+                        Type = rule.Script==null ? Aggregator.Core.Script.ScriptSourceElementType.CompiledRule : Script.ScriptSourceElementType.Rule,
+                        SourceCode = rule.Script?.Script,
+                        CompiledRuleType = rule.CompiledRuleType
                     };
                 });
             sourceElements.AddRange(ruleElements);

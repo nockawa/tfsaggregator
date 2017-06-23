@@ -189,6 +189,7 @@
     <Compile Include="Facade\ProcessTemplateVersionWrapper.cs" />
     <Compile Include="Facade\RevisionWrapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Interfaces\ICompiledRule.cs" />
     <Compile Include="Interfaces\IFieldExposed.cs" />
     <Compile Include="Interfaces\IProcessTemplateVersion.cs" />
     <Compile Include="Interfaces\IRevision.cs" />

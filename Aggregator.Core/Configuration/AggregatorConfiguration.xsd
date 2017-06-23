@@ -89,6 +89,7 @@
                 <xs:attribute name="name" type="xs:ID" use="required" />
                 <xs:attribute name="appliesTo" type="xs:string" use="optional" />
                 <xs:attribute name="hasFields" type="xs:string" use="optional" />
+                <xs:attribute name="assemblyType" type="xs:string" use="optional" />
               </xs:extension>
             </xs:simpleContent>
           </xs:complexType>

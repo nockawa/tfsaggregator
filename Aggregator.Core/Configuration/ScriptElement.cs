@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Aggregator.Core.Configuration
 {
-    public abstract class ScriptElement
+    public class ScriptElement
     {
+        public ScriptElement()
+        {
+        }
+
+        public ScriptElement(string script)
+        {
+            Script = script;
+        }
+
         public string Script { get; set; }
     }
 }

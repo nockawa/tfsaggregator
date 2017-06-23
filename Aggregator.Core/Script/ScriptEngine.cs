@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using Aggregator.Core.Configuration;
 using Aggregator.Core.Interfaces;
 using Aggregator.Core.Monitoring;
 
@@ -29,6 +31,7 @@ namespace Aggregator.Core
         /// <param name="scriptName">Name of the script.</param>
         /// <param name="workItem">The work item that must be processed by the script.</param>
         public abstract void Run(string scriptName, IWorkItem workItem, IWorkItemRepository store);
+        public abstract object RunCompiledRule(Rule rule, IWorkItem workItem, IWorkItemRepository store);
 
         internal static ScriptEngine MakeEngine(string scriptLanguage, ILogEvents logger, bool debug, IScriptLibrary library)
         {

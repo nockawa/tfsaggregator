@@ -9,6 +9,7 @@ namespace Aggregator.Core.Script
     public enum ScriptSourceElementType
     {
         Rule,
+        CompiledRule,
         Snippet,
         Function
     }
@@ -19,6 +20,7 @@ namespace Aggregator.Core.Script
         public string Name;
         public ScriptSourceElementType Type;
         public string SourceCode;
+        public Type CompiledRuleType;
 #pragma warning restore SA1401 // FieldsMustBePrivate
     }
 }

@@ -1,4 +1,5 @@
-﻿using Aggregator.Core.Interfaces;
+﻿using Aggregator.Core.Configuration;
+using Aggregator.Core.Interfaces;
 using Aggregator.Core.Monitoring;
 using Aggregator.Core.Script;
 
@@ -45,6 +46,11 @@ Namespace " + this.Namespace + @"
   End Class
 End Namespace
 ";
+        }
+
+        public override object RunCompiledRule(Rule rule, IWorkItem workItem, IWorkItemRepository store)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

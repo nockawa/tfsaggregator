@@ -1,4 +1,5 @@
-﻿using Aggregator.Core.Interfaces;
+﻿using Aggregator.Core.Configuration;
+using Aggregator.Core.Interfaces;
 using Aggregator.Core.Monitoring;
 using Aggregator.Core.Script;
 
@@ -47,6 +48,17 @@ namespace Aggregator.Core
   }
 }
 ";
+        }
+
+        public override object RunCompiledRule(Rule rule, IWorkItem workItem, IWorkItemRepository store)
+        {
+            this.Logger.ScriptLogger.RuleName = rule.Name;
+
+            // Lets run our script and display its results
+            object result = rule.CompiledRule.Execute(workItem, store, this.Logger.ScriptLogger, this.Library);
+            this.Logger.ResultsFromScriptRun(rule.Name, result);
+
+            return result;
         }
     }
 }

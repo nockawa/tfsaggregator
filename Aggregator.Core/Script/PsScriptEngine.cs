@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Management.Automation.Runspaces;
 
+using Aggregator.Core.Configuration;
 using Aggregator.Core.Interfaces;
 using Aggregator.Core.Monitoring;
 using Aggregator.Core.Script;
@@ -56,6 +57,11 @@ namespace Aggregator.Core
 
                 this.Logger.ResultsFromScriptRun(scriptName, results);
             }
+        }
+
+        public override object RunCompiledRule(Rule rule, IWorkItem workItem, IWorkItemRepository store)
+        {
+            throw new NotImplementedException();
         }
     }
 }
