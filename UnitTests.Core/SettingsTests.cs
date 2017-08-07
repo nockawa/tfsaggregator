@@ -22,7 +22,7 @@ namespace UnitTests.Core
         {
             var logger = Substitute.For<ILogEvents>();
 
-            var settings = TestHelpers.LoadConfigFromResourceFile("NoOp.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NoOp.policies", null, logger);
             var level = settings.LogLevel;
 
             Assert.AreEqual(LogLevel.Diagnostic, level);
@@ -35,7 +35,7 @@ namespace UnitTests.Core
             var logger = Substitute.For<ILogEvents>();
             string file = "does_not_exists";
 
-            TFSAggregatorSettings.LoadFromFile(file, logger);
+            TFSAggregatorSettings.LoadFromFile(file, null, logger);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace UnitTests.Core
             var logger = Substitute.For<ILogEvents>();
             string file = "syntax.xml";
 
-            var settings = TestHelpers.LoadConfigFromResourceFile(file, logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile(file, null, logger);
 
             Assert.IsNotNull(settings);
         }
@@ -55,7 +55,7 @@ namespace UnitTests.Core
             var logger = Substitute.For<ILogEvents>();
             string config = @"<AggregatorConfiguration><runtime><logging level='Diag'/></runtime></AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.IsNull(settings);
             logger.Received().InvalidConfiguration(
@@ -77,7 +77,7 @@ namespace UnitTests.Core
     </policy>   
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.IsNull(settings);
             logger.Received().InvalidConfiguration(
@@ -97,7 +97,7 @@ namespace UnitTests.Core
     <policy name='p1'/>
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.IsNull(settings);
             logger.Received().InvalidConfiguration(
@@ -120,7 +120,7 @@ namespace UnitTests.Core
     </policy>   
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.IsNotNull(settings);
             logger.Received().UnreferencedRule("r1");
@@ -142,7 +142,7 @@ namespace UnitTests.Core
     </policy>
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.IsNotNull(settings);
 
@@ -167,7 +167,7 @@ namespace UnitTests.Core
     </policy>
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.AreEqual(settings.RateLimit?.Changes, 100);
         }
@@ -188,7 +188,7 @@ namespace UnitTests.Core
     </policy>
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.AreEqual(settings.RateLimit?.Interval, TimeSpan.FromHours(1));
         }
@@ -209,7 +209,7 @@ namespace UnitTests.Core
     </policy>
 </AggregatorConfiguration>";
 
-            var settings = TFSAggregatorSettings.LoadXml(config, logger);
+            var settings = TFSAggregatorSettings.LoadXml(config, null, logger);
 
             Assert.AreEqual(settings.ServerBaseUrl, new Uri("http://tfs.example.local:8080/"));
         }

@@ -70,7 +70,7 @@ namespace UnitTests.Core
         public void Should_aggregate_a_numeric_field()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItem.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItem.policies", null, logger);
             var alternateRepository = this.SetupFakeRepository();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -95,7 +95,7 @@ namespace UnitTests.Core
         public void Should_aggregate_a_numeric_field_short()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItem-Short.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItem-Short.policies", null, logger);
             var alternateRepository = this.SetupFakeRepository_Short();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -120,7 +120,7 @@ namespace UnitTests.Core
         public void Should_aggregate_a_numeric_field_VB()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItemVB.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("SumFieldsOnSingleWorkItemVB.policies", null, logger);
             var alternateRepository = this.SetupFakeRepository_Short();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -145,7 +145,7 @@ namespace UnitTests.Core
         public void Should_aggregate_to_parent()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("Rollup.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("Rollup.policies", null, logger);
             var alternateRepository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
 
@@ -205,7 +205,7 @@ namespace UnitTests.Core
         public void Should_aggregate_to_parent_should_handle_null()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("Rollup.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("Rollup.policies", null, logger);
             var alternateRepository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
 

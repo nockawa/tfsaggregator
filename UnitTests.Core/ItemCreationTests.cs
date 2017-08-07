@@ -22,7 +22,7 @@ namespace UnitTests.Core
         public void WorkItemLink_addNew_succeeds()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
 
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
@@ -61,7 +61,7 @@ namespace UnitTests.Core
         public void WorkItemLink_addExisting_noop()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
 
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
@@ -102,7 +102,7 @@ namespace UnitTests.Core
         public void WorkItem_addNew_succeeds()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
 
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();

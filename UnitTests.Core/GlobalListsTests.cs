@@ -34,7 +34,7 @@ namespace UnitTests.Core
         public void GlobalList_UserParameterAddValue_Succeeded()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("UserParameters.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("UserParameters.policies", null, logger);
 
             var context = Substitute.For<IRequestContext>();
             context.GetProjectCollectionUri().Returns(
@@ -69,7 +69,7 @@ namespace UnitTests.Core
         public void GlobalList_UserParameterReplaceExisting_Succeeded()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("UserParameters.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("UserParameters.policies", null, logger);
 
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();

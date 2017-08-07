@@ -112,7 +112,7 @@ $self.Fields[""x""].Value = 33
 return $self.Fields[""z""].Value ";
 
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -154,7 +154,7 @@ return $self.Fields[""z""].Value ";
             string script = @" return $self.Id ";
 
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -187,7 +187,7 @@ return $self.Fields[""z""].Value ";
         public void Can_execute_a_Powershell_noop_rule()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NoOp.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NoOp.policies", null, logger);
             var repository = Substitute.For<IWorkItemRepository>();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var workItem = Substitute.For<IWorkItem>();

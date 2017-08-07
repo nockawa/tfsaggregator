@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Caching;
 
 using Aggregator.Core.Configuration;
@@ -50,7 +52,17 @@ namespace Aggregator.Core.Context
 
                 logger.LoadingConfiguration(settingsPath);
 
-                var settings = TFSAggregatorSettings.LoadFromFile(settingsPath, logger);
+                // Get the assemblies storing compiled rules
+                var assemblyPathNames = Directory.GetFiles(Path.GetDirectoryName(settingsPath), "*.rules.dll", SearchOption.AllDirectories);
+                var loadedAssemblies = assemblyPathNames.Select(Assembly.LoadFrom);
+                var assemblyRuleTypes = new List<Type>();
+                var codedRuleType = typeof(ICompiledRule);
+                foreach (var assembly in loadedAssemblies)
+                {
+                    assemblyRuleTypes.AddRange(assembly.GetTypes().Where(t => codedRuleType.IsAssignableFrom(t)));
+                }
+
+                var settings = TFSAggregatorSettings.LoadFromFile(settingsPath, assemblyRuleTypes, logger);
                 runtime = MakeRuntimeContext(settingsPath, settings, requestContext, logger, repoBuilder, scriptLibraryBuilder);
 
                 if (!runtime.HasErrors)
@@ -58,7 +70,7 @@ namespace Aggregator.Core.Context
                     var itemPolicy = new CacheItemPolicy();
                     itemPolicy.Priority = CacheItemPriority.NotRemovable;
                     var watchedFiles = new List<string>();
-                    watchedFiles.AddRange(settings.RulesAssemblies);
+                    watchedFiles.AddRange(assemblyPathNames);
                     watchedFiles.Add(settingsPath);
                     itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(watchedFiles));
 
@@ -154,7 +166,6 @@ namespace Aggregator.Core.Context
                 var itemPolicy = new CacheItemPolicy();
                 itemPolicy.Priority = CacheItemPriority.NotRemovable;
                 var watchedFiles = new List<string>();
-                watchedFiles.AddRange(Settings.RulesAssemblies);
                 watchedFiles.Add(this.SettingsPath);
                 itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(watchedFiles));
 

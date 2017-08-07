@@ -18,7 +18,7 @@ namespace UnitTests.Core
         private WorkItemRepositoryMock MakeRepositoryMock()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -46,7 +46,7 @@ namespace UnitTests.Core
         public void RulesAndPolicy_SpecificCollection_TwoPoliciesTwoRulesApplies()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", null, logger);
             var repository = this.MakeRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -77,7 +77,7 @@ namespace UnitTests.Core
         public void RulesAndPolicy_GenericCollection_OnePoliciesOneRulesApplies()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", null, logger);
             var repository = this.MakeRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -107,7 +107,7 @@ namespace UnitTests.Core
         public void RulesAndPolicy_TypeFilter_OnePoliciesOneRulesApplies()
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("RulesAndPolicy.policies", null, logger);
             var repository = this.MakeRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();

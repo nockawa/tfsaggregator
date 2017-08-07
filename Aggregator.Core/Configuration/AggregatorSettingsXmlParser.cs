@@ -35,7 +35,7 @@ namespace Aggregator.Core.Configuration
             /// <param name="lastWriteTime">Last time the document has been changed.</param>
             /// <param name="load">A lambda returning the <see cref="XDocument"/> to parse.</param>
             /// <returns>An instance of <see cref="TFSAggregatorSettings"/> or null</returns>
-            public TFSAggregatorSettings Parse(DateTime lastWriteTime, Func<LoadOptions, XDocument> load, string settingsDirectory)
+            public TFSAggregatorSettings Parse(DateTime lastWriteTime, Func<LoadOptions, XDocument> load, IEnumerable<Type> assemblyRuleTypes)
             {
                 this.instance = new TFSAggregatorSettings();
                 
@@ -55,14 +55,7 @@ namespace Aggregator.Core.Configuration
                 this.instance.Snippets = this.ParseSnippetsSection(doc);
                 this.instance.Functions = this.ParseFunctionsSection(doc);
 
-                // Get the assemblies storing compiled rules
-                this.instance.RulesAssemblies = new List<String>();
-                if (!String.IsNullOrEmpty(settingsDirectory))
-                {
-                    this.instance.RulesAssemblies = Directory.GetFiles(settingsDirectory, "*.rules.dll", SearchOption.AllDirectories).ToList();
-                }
-
-                Dictionary<string, Rule> rules = this.ParseRulesSection(doc, this.instance.RulesAssemblies);
+                Dictionary<string, Rule> rules = this.ParseRulesSection(doc, assemblyRuleTypes);
 
                 List<Policy> policies = this.ParsePoliciesSection(doc, rules);
 
@@ -293,16 +286,8 @@ namespace Aggregator.Core.Configuration
                 return functions;
             }
 
-            private Dictionary<string, Rule> ParseRulesSection(XDocument doc, List<string> rulesAssemblies)
+            private Dictionary<string, Rule> ParseRulesSection(XDocument doc, IEnumerable<Type> assemblyRuleTypes)
             {
-                var binaryRuleTypes = new List<Type>();
-                var codedRuleType = typeof(ICompiledRule);
-                foreach (var assembly in rulesAssemblies)
-                {
-                    var asm = Assembly.LoadFrom(assembly);
-                    binaryRuleTypes.AddRange(asm.GetTypes().Where(t => codedRuleType.IsAssignableFrom(t)));
-                }
-
                 var rules = new Dictionary<string, Rule>();
                 foreach (var ruleElem in doc.Root.Elements("rule"))
                 {
@@ -329,7 +314,7 @@ namespace Aggregator.Core.Configuration
                     if (ruleElem.Attribute("assemblyType") != null)
                     {
                         var ruleType = ruleElem.Attribute("assemblyType").Value;
-                        rule.CompiledRuleType = binaryRuleTypes.FirstOrDefault(t => t.Name==ruleType || t.FullName.Contains(ruleType) || t.AssemblyQualifiedName.Contains(ruleType));
+                        rule.CompiledRuleType = assemblyRuleTypes.FirstOrDefault(t => t.Name==ruleType || t.FullName.Contains(ruleType) || t.AssemblyQualifiedName.Contains(ruleType));
                     }
 
                     // The rule's code is store in the CDATA section of the Element

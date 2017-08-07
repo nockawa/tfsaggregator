@@ -24,12 +24,11 @@ namespace Aggregator.Core.Configuration
         /// <param name="settingsPath">Path to policies file</param>
         /// <param name="logger">Logging object</param>
         /// <returns>An instance of <see cref="TFSAggregatorSettings"/> or null</returns>
-        public static TFSAggregatorSettings LoadFromFile(string settingsPath, ILogEvents logger)
+        public static TFSAggregatorSettings LoadFromFile(string settingsPath, IEnumerable<Type> assemblyRuleTypes, ILogEvents logger)
         {
             DateTime lastWriteTime = System.IO.File.GetLastWriteTimeUtc(settingsPath);
             var parser = new AggregatorSettingsXmlParser(logger);
-            var settingDirectory = System.IO.Path.GetDirectoryName(settingsPath);
-            return parser.Parse(lastWriteTime, (xmlLoadOptions) => XDocument.Load(settingsPath, xmlLoadOptions), settingDirectory);
+            return parser.Parse(lastWriteTime, (xmlLoadOptions) => XDocument.Load(settingsPath, xmlLoadOptions), assemblyRuleTypes);
         }
 
         /// <summary>
@@ -38,12 +37,12 @@ namespace Aggregator.Core.Configuration
         /// <param name="content">Configuration data to parse</param>
         /// <param name="logger">Logging object</param>
         /// <returns>An instance of <see cref="TFSAggregatorSettings"/> or null</returns>
-        public static TFSAggregatorSettings LoadXml(string content, ILogEvents logger)
+        public static TFSAggregatorSettings LoadXml(string content, IEnumerable<Type> assemblyRuleTypes, ILogEvents logger)
         {
             // conventional point in time reference
             DateTime staticTimestamp = new DateTime(0, DateTimeKind.Utc);
             var parser = new AggregatorSettingsXmlParser(logger);
-            return parser.Parse(staticTimestamp, (xmlLoadOptions) => XDocument.Parse(content, xmlLoadOptions), System.IO.Directory.GetCurrentDirectory());
+            return parser.Parse(staticTimestamp, (xmlLoadOptions) => XDocument.Parse(content, xmlLoadOptions), assemblyRuleTypes);
         }
 
         public LogLevel LogLevel { get; private set; }
@@ -67,7 +66,5 @@ namespace Aggregator.Core.Configuration
         public bool Debug { get; set; }
 
         public RateLimit RateLimit { get; set; }
-
-        public List<string> RulesAssemblies { get; private set; }
     }
 }

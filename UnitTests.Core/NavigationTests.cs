@@ -24,7 +24,7 @@ namespace UnitTests.Core
         private static WorkItemRepositoryMock MakeRepository(out IWorkItem startPoint)
         {
             var logger = Substitute.For<ILogEvents>();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -155,7 +155,7 @@ foreach(var req in requirements) {
         public void TransitionState_InProgress_to_Done_succeeded()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -181,7 +181,7 @@ foreach(var req in requirements) {
         public void TransitionState_New_to_Done_succeeded_via_InProgress()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -216,7 +216,7 @@ foreach(var req in requirements) {
         public void TransitionState_to_non_existing()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();
@@ -254,7 +254,7 @@ foreach(var req in requirements) {
         public void TransitionStateCSharp_New_to_Done_succeeded_via_InProgress()
         {
             var logger = new DebugEventLogger();
-            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", logger);
+            var settings = TestHelpers.LoadConfigFromResourceFile("NewObjects.policies", null, logger);
             var repository = new WorkItemRepositoryMock();
             System.Func<IRuntimeContext, IScriptLibrary> scriptLibraryBuilder = (x) => Substitute.For<IScriptLibrary>();
             var context = Substitute.For<IRequestContext>();

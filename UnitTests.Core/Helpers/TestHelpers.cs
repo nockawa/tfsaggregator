@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Aggregator.Core;
@@ -30,10 +31,10 @@ namespace UnitTests.Core
             }
         }
 
-        public static TFSAggregatorSettings LoadConfigFromResourceFile(string fileName, ILogEvents logger)
+        public static TFSAggregatorSettings LoadConfigFromResourceFile(string fileName, IEnumerable<Type> assemblyRuleTypes, ILogEvents logger)
         {
             var configXml = LoadTextFromEmbeddedResource(fileName);
-            return TFSAggregatorSettings.LoadXml(configXml, logger);
+            return TFSAggregatorSettings.LoadXml(configXml, assemblyRuleTypes, logger);
         }
 
         public static void LoadAndRun(this ScriptEngine engine, string scriptName, string script, IWorkItem workItem, IWorkItemRepository store)
