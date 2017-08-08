@@ -70,7 +70,6 @@ namespace Aggregator.Core.Context
                     var itemPolicy = new CacheItemPolicy();
                     itemPolicy.Priority = CacheItemPriority.NotRemovable;
                     var watchedFiles = new List<string>();
-                    watchedFiles.AddRange(assemblyPathNames);
                     watchedFiles.Add(settingsPath);
                     itemPolicy.ChangeMonitors.Add(new HostFileChangeMonitor(watchedFiles));
 
