@@ -243,8 +243,15 @@ namespace Aggregator.Core.Configuration
                     foreach (var ruleRefElem in policyElem.Elements("ruleRef"))
                     {
                         string refName = ruleRefElem.Attribute("name").Value;
-                        var rule = rules[refName];
-                        referredRules.Add(rule);
+                        Rule rule;
+                        if (rules.TryGetValue(refName, out rule))
+                        {
+                            referredRules.Add(rule);
+                        }
+                        else
+                        {
+                            this.logger.ReferenceBadRule(policy.Name, refName);
+                        }
                     }
 
                     policy.Rules = referredRules;
@@ -315,6 +322,11 @@ namespace Aggregator.Core.Configuration
                     {
                         var ruleType = ruleElem.Attribute("assemblyType").Value;
                         rule.CompiledRuleType = assemblyRuleTypes.FirstOrDefault(t => t.Name==ruleType || t.FullName.Contains(ruleType) || t.AssemblyQualifiedName.Contains(ruleType));
+                        if (rule.CompiledRuleType == null)
+                        {
+                            this.logger.FailureLoadingCodedRuleType(ruleType);
+                            continue;
+                        }
                     }
 
                     // The rule's code is store in the CDATA section of the Element

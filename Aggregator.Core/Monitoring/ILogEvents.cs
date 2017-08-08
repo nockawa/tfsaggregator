@@ -54,6 +54,10 @@ namespace Aggregator.Core.Monitoring
 
         void FailureLoadingScript(string scriptName);
 
+        void FailureLoadingCodedRuleType(string typeNameRequested);
+
+        void ReferenceBadRule(string policyName, string badRuleName);
+
         void AttemptingToMoveWorkItemToState(IWorkItem workItem, string orginalSourceState, string destState);
 
         void WorkItemIsValidToSave(IWorkItem workItem);

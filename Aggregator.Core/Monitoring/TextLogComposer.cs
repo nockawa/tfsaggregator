@@ -275,6 +275,23 @@ namespace Aggregator.Core.Monitoring
                 scriptName);
         }
 
+        public void FailureLoadingCodedRuleType(string typeNameRequested)
+        {
+            this.logger.Log(
+                LogLevel.Error, 
+                "Failure in loading the coded rule Type '{0}' in one of the *.rules.dll assemblies.",
+                typeNameRequested);
+        }
+
+        public void ReferenceBadRule(string policyName, string badRuleName)
+        {
+            this.logger.Log(
+                LogLevel.Warning,
+                "Rule reference '{0}' in Policy '{1}' will be ignored because Rule is incorrectly defined",
+                badRuleName,
+                policyName);
+        }
+
         public void AttemptingToMoveWorkItemToState(IWorkItem workItem, string orginalSourceState, string destState)
         {
             this.logger.Log(
